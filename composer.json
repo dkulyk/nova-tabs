@@ -1,0 +1,29 @@
+{
+    "name": "dkulyk/nova-tabs",
+    "description": "Another Laravel Nova Tabs Package",
+    "require": {
+        "laravel/nova": "^1.3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmytro Kulyk",
+            "email": "lnkvisitor.ts@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DKulyk\\Nova\\": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "DKulyk\\Nova\\TabsServiceProvider"
+            ]
+        }
+    }
+}
