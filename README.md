@@ -1,6 +1,7 @@
 # Another Laravel Nova Tabs Package
 [![Latest Version on Github](https://img.shields.io/packagist/v/dkulyk/nova-tabs.svg?style=flat)](https://packagist.org/packages/dkulyk/nova-tabs)
 [![Total Downloads](https://img.shields.io/packagist/dt/dkulyk/nova-tabs.svg?style=flat)](https://packagist.org/packages/dkulyk/nova-tabs)
+[![Become a Patron!](https://img.shields.io/badge/become-a_patron!-red.svg?logo=patreon&style=flat)](https://www.patreon.com/bePatron?u=16285116)
 
 1. [Installation](#Installation)
 2. [Usage](#Usage)
