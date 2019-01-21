@@ -182,4 +182,5 @@ Set `->defaultSearch(true)` to revert it to its default.
 1. No need to use trait.
 2. Fields passed through a standard panel(standard authorization and visibility behavior).
 3. Nested Panels and Listable fields become a new tabs.
+4. Relations will loaded only when Tab will be open.
 
