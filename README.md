@@ -1,6 +1,6 @@
 # Another Laravel Nova Tabs Package
 
-It's a fork for [eminiarts/nova-tabs](https://github.com/eminiarts/nova-tabs) with new Tabs implementation(used native Panel). 
+It's a hard fork for [eminiarts/nova-tabs](https://github.com/eminiarts/nova-tabs) with new Tabs implementation(used native Panel). 
 
 1. [Installation](#Installation)
 2. [Usage](#Usage)
