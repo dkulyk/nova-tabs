@@ -11,12 +11,22 @@ class Tabs extends Panel
     public $defaultSearch = false;
 
     /**
-     * Tabs constructor.
-     * @param  string $name
+     * Prepare the given fields.
+     *
+     * @param  \Closure|array $fields
+     * @return array
      */
-    public function __construct(string $name)
+    protected function prepareFields($fields)
     {
-        parent::__construct($name);
+        collect(is_callable($fields) ? $fields() : $fields)->each(function ($fields, $key) {
+            if (is_string($key) && is_array($fields)) {
+                $fields = new Panel($key, $fields);
+            }
+
+            $this->addTab($fields);
+        });
+
+        return $this->data;
     }
 
     /**
