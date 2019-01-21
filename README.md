@@ -1,7 +1,5 @@
 # Another Laravel Nova Tabs Package
 
-It's a hard fork for [eminiarts/nova-tabs](https://github.com/eminiarts/nova-tabs) with new Tabs implementation(used native Panel). 
-
 1. [Installation](#Installation)
 2. [Usage](#Usage)
     1. [Tabs Panel](#tabs-panel)
@@ -9,6 +7,7 @@ It's a hard fork for [eminiarts/nova-tabs](https://github.com/eminiarts/nova-tab
     3. [Relationship Tabs](#relationship-tabs)
     4. [Combine Fields and Relations in Tabs](#combine-fields-and-relations-in-tabs)
 3. [Customization](#customization)
+4. [Difference with eminiarts/nova-tabs](#differenece-with-eminiartsnova-tabs)
 
 ## Installation
 
@@ -37,14 +36,15 @@ public function fields()
         
         // ...
         
-        (new Tabs('Tabs'))
-            ->addTab(new Panel('Balance', [
+        new Tabs('Tabs', [
+            new Panel('Balance', [
                 Number::make('Balance', 'balance')->onlyOnDetail(),
                 Number::make('Total', 'total')->onlyOnDetail(),
-            ]))
-            ->addTab(new Panel('Other Info', [
+            ]),
+            'Other Info' => [
                 Number::make('Paid To Date', 'paid_to_date')->onlyOnDetail(),
-            ])),
+            ],
+        ]),
         
         // ...
         
@@ -67,20 +67,21 @@ use DKulyk\Nova\Tabs;
 public function fields(Request $request)
     {
         return [
-            (new Tabs('Contact Details'))
-                ->addTab(new Panel('Address', [
+            (new Tabs('Contact Details', [
+                'Address' => [
                     ID::make('Id', 'id')->rules('required'),
                     Text::make('Email', 'email')->sortable(),
                     Text::make('Phone', 'phone')->sortable(),
-                ]))
-                ->addTab(new Panel('Relations', [
+                ],
+                
+                'Relations' => [
                     BelongsTo::make('User'),
                     MorphTo::make('Contactable')->types([
                         Client::class,
                         Invoice::class,
                     ]),
-                ])),
-                ->showToolbar(),
+                ]
+            ]))->showToolbar(),
         ];
     }
 ```
@@ -98,18 +99,17 @@ use DKulyk\Nova\Tabs;
 
 class User extends Resource
 {
-
     public function fields(Request $request)
     {
         return [
             
             // ...
             
-            Tabs::make('Relations')
-                ->addTab(HasMany::make('Invoices'))
-                ->addTab(HasMany::make('Notes'))
-                ->addTab(HasMany::make('Contacts'))
-            ,
+            new Tabs('Relations', [
+                HasMany::make('Invoices'),
+                HasMany::make('Notes'),
+                HasMany::make('Contacts')
+            ]),
 
             // ...
             
@@ -132,12 +132,13 @@ use DKulyk\Nova\Tabs;
 public function fields(Request $request)
 {
     return [
-        (new Tabs(__('Client Custom Details'))
-            ->addTab(new Panel(__('Details'), [
-                ID::make('Id', 'id')->rules('required')->hideFromIndex(),
-                Text::make('Name', 'name'),
-            ]))
-            ->addTab(HasMany::make('Invoices'))
+        (new Tabs(__('Client Custom Details'), [
+            new Panel(__('Details'), [
+                    ID::make('Id', 'id')->rules('required')->hideFromIndex(),
+                    Text::make('Name', 'name'),
+            ]),
+            HasMany::make('Invoices')
+        ])
     ];
 }
 ```
@@ -160,9 +161,9 @@ class User extends Resource
             
             // ...
             
-            (new Tabs('Relations'))
-                ->addTab(HasMany::make('Invoices'))
-                ->defaultSearch(true),
+            (new Tabs('Relations', [
+                HasMany::make('Invoices')
+            ]))->defaultSearch(true),
 
             // ...
             
@@ -175,4 +176,10 @@ Set `->defaultSearch(true)` to revert it to its default.
 
 ![image](https://user-images.githubusercontent.com/3426944/50060732-dbc01980-0197-11e9-8f0c-6014132539a2.png)
 
+
+### Differenece with [eminiarts/nova-tabs](https://github.com/eminiarts/nova-tabs)
+
+1. No need to use trait.
+2. Fields passed through a standard panel(standard authorization and visibility behavior).
+3. Nested Panels and Listable fields become a new tabs.
 
