@@ -3,14 +3,14 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/dkulyk/nova-tabs.svg?style=flat)](https://packagist.org/packages/dkulyk/nova-tabs)
 [![Become a Patron!](https://img.shields.io/badge/become-a_patron!-red.svg?logo=patreon&style=flat)](https://www.patreon.com/bePatron?u=16285116)
 
-1. [Installation](#Installation)
-2. [Usage](#Usage)
-    1. [Tabs Panel](#tabs-panel)
-    2. [Tabs Panel with Toolbar](#tabs-panel-with-toolbar)
-    3. [Relationship Tabs](#relationship-tabs)
-    4. [Combine Fields and Relations in Tabs](#combine-fields-and-relations-in-tabs)
-3. [Customization](#customization)
-4. [Difference with eminiarts/nova-tabs](#differenece-with-eminiartsnova-tabs)
+1. [Installation](#user-content-installation)
+2. [Usage](#user-content-usage)
+    1. [Tabs Panel](#user-content-tabs-panel)
+    2. [Tabs Panel with Toolbar](#user-content-tabs-panel-with-toolbar)
+    3. [Relationship Tabs](#user-content-relationship-tabs)
+    4. [Combine Fields and Relations in Tabs](#user-content-combine-fields-and-relations-in-tabs)
+3. [Customization](#user-content-customization)
+4. [Difference with eminiarts/nova-tabs](#user-content-differenece-with-eminiartsnova-tabs)
 
 ## Installation
 
@@ -68,25 +68,25 @@ If you are only using a Tabs without another default Panel, you can set the thir
 use DKulyk\Nova\Tabs;
 
 public function fields(Request $request)
-    {
-        return [
-            (new Tabs('Contact Details', [
-                'Address' => [
-                    ID::make('Id', 'id')->rules('required'),
-                    Text::make('Email', 'email')->sortable(),
-                    Text::make('Phone', 'phone')->sortable(),
-                ],
-                
-                'Relations' => [
-                    BelongsTo::make('User'),
-                    MorphTo::make('Contactable')->types([
-                        Client::class,
-                        Invoice::class,
-                    ]),
-                ]
-            ]))->showToolbar(),
-        ];
-    }
+{
+    return [
+        (new Tabs('Contact Details', [
+            'Address' => [
+                ID::make('Id', 'id')->rules('required'),
+                Text::make('Email', 'email')->sortable(),
+                Text::make('Phone', 'phone')->sortable(),
+            ],
+
+            'Relations' => [
+                BelongsTo::make('User'),
+                MorphTo::make('Contactable')->types([
+                    Client::class,
+                    Invoice::class,
+                ]),
+            ]
+        ]))->showToolbar(),
+    ];
+}
 ```
 
 ### Relationship Tabs
@@ -100,25 +100,21 @@ You can also group Relations into Tabs.
 
 use DKulyk\Nova\Tabs;
 
-class User extends Resource
+public function fields(Request $request)
 {
-    public function fields(Request $request)
-    {
-        return [
-            
-            // ...
-            
-            new Tabs('Relations', [
-                HasMany::make('Invoices'),
-                HasMany::make('Notes'),
-                HasMany::make('Contacts')
-            ]),
+    return [
 
-            // ...
-            
-        ];
-    }
+        // ...
 
+        new Tabs('Relations', [
+            HasMany::make('Invoices'),
+            HasMany::make('Notes'),
+            HasMany::make('Contacts')
+        ]),
+
+        // ...
+
+    ];
 }
 ```
 
@@ -155,23 +151,19 @@ By default, the Tabs component moves the search input and the create button to t
 
 use DKulyk\Nova\Tabs;
 
-class User extends Resource
+public function fields(Request $request)
 {
+    return [
 
-    public function fields(Request $request)
-    {
-        return [
-            
-            // ...
-            
-            (new Tabs('Relations', [
-                HasMany::make('Invoices')
-            ]))->defaultSearch(true),
+        // ...
 
-            // ...
-            
-        ];
-    }
+        (new Tabs('Relations', [
+            HasMany::make('Invoices')
+        ]))->defaultSearch(true),
+
+        // ...
+
+    ];
 }
 ```
 
