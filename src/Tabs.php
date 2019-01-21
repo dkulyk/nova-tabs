@@ -46,8 +46,9 @@ class Tabs extends Panel
             $this->data[] = $panel;
         } elseif ($panel instanceof Panel) {
             foreach ($panel->data as $field) {
-                if ($field instanceof ListableField) {
-                    throw new RuntimeException('Listable field does not support in Panel tab.');
+                if ($field instanceof ListableField || $field instanceof Panel) {
+                    $this->addTab($field);
+                    continue;
                 }
 
                 $field->panel = $this->name;
