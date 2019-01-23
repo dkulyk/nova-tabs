@@ -4,6 +4,7 @@ namespace DKulyk\Nova;
 
 use RuntimeException;
 use Laravel\Nova\Panel;
+use Illuminate\Http\Resources\MergeValue;
 use Laravel\Nova\Contracts\ListableField;
 
 class Tabs extends Panel
@@ -45,22 +46,41 @@ class Tabs extends Panel
             ]);
             $this->data[] = $panel;
         } elseif ($panel instanceof Panel) {
-            foreach ($panel->data as $field) {
-                if ($field instanceof ListableField || $field instanceof Panel) {
-                    $this->addTab($field);
-                    continue;
-                }
-
-                $field->panel = $this->name;
-
-                $field->withMeta([
-                    'tab' => $panel->name,
-                ]);
-
-                $this->data[] = $field;
-            }
+            $this->addFields($panel->name, $panel->data);
         } else {
             throw new RuntimeException('Only listable fields or Panel allowed.');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add fields to the Tab.
+     *
+     * @param  string $tab
+     * @param  array $fields
+     * @return \DKulyk\Nova\Tabs
+     */
+    public function addFields($tab, array $fields)
+    {
+        foreach ($fields as $field) {
+            if ($field instanceof ListableField || $field instanceof Panel) {
+                $this->addTab($field);
+                continue;
+            }
+
+            if ($field instanceof MergeValue) {
+                $this->addFields($tab, $field->data);
+                continue;
+            }
+
+            $field->panel = $this->name;
+
+            $field->withMeta([
+                'tab' => $tab,
+            ]);
+
+            $this->data[] = $field;
         }
 
         return $this;
