@@ -57,7 +57,7 @@ public function fields()
 
 ### Tabs Panel with Toolbar
 
-If you are only using a Tabs without another default Panel, you can set the third argument `showToolbar` to `true` like in Panel.
+If you are only using a Tabs without another default Panel, you can call `withToolbar` method like in Panel.
 
 ![image](https://user-images.githubusercontent.com/3426944/50448780-608efe00-0923-11e9-9d55-3dc3d8d896e1.png)
 
