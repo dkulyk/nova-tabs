@@ -84,7 +84,7 @@ public function fields(Request $request)
                     Invoice::class,
                 ]),
             ]
-        ]))->showToolbar(),
+        ]))->withToolbar(),
     ];
 }
 ```
