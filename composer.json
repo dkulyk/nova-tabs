@@ -1,9 +1,6 @@
 {
     "name": "dkulyk/nova-tabs",
     "description": "Another Laravel Nova Tabs Package",
-    "require": {
-        "laravel/nova": "^1.3.0"
-    },
     "license": "MIT",
     "authors": [
         {
