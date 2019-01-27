@@ -10,7 +10,6 @@
     3. [Relationship Tabs](#user-content-relationship-tabs)
     4. [Combine Fields and Relations in Tabs](#user-content-combine-fields-and-relations-in-tabs)
 3. [Customization](#user-content-customization)
-4. [Difference with eminiarts/nova-tabs](#user-content-differenece-with-eminiartsnova-tabs)
 
 ## Installation
 
@@ -170,12 +169,3 @@ public function fields(Request $request)
 Set `->defaultSearch(true)` to revert it to its default.
 
 ![image](https://user-images.githubusercontent.com/3426944/50060732-dbc01980-0197-11e9-8f0c-6014132539a2.png)
-
-
-### Differenece with [eminiarts/nova-tabs](https://github.com/eminiarts/nova-tabs)
-
-1. No need to use trait.
-2. Fields passed through a standard panel(standard authorization and visibility behavior).
-3. Nested Panels and Listable fields become a new tabs.
-4. Relations will loaded only when Tab will be open.
-
