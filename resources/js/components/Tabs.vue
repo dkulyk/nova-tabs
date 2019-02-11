@@ -28,7 +28,7 @@
                             v-for="(field, index) in tab.fields"
                             :class="{'remove-bottom-border': index == tab.fields.length - 1}"
                             :key="'tab-' + index"
-                            :is="'detail-' + field.component"
+                            :is="componentName(field)"
                             :resource-name="resourceName"
                             :resource-id="resourceId"
                             :resource="resource"
@@ -78,9 +78,14 @@
             actionExecuted() {
                 this.$emit("actionExecuted");
             },
+
             handleTabClick(tab, event) {
                 tab.init = true
                 this.activeTab = tab.name
+            },
+
+            componentName(field) {
+                return field.prefixComponent ? 'detail-' + field.component : field.component
             }
         }
     };
