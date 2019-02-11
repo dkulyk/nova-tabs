@@ -11,6 +11,8 @@ class Tabs extends Panel
 {
     public $defaultSearch = false;
 
+    public $hideLabel = false;
+
     /**
      * Prepare the given fields.
      *
@@ -98,6 +100,17 @@ class Tabs extends Panel
     }
 
     /**
+     * @param bool $value
+     * @return $this
+     */
+    public function hideLabel($value = true)
+    {
+        $this->hideLabel = $value;
+
+        return $this;
+    }
+
+    /**
      * Prepare the panel for JSON serialization.
      *
      * @return array
@@ -107,6 +120,7 @@ class Tabs extends Panel
         return array_merge(parent::jsonSerialize(), [
             'component' => 'dkulyk-tabs',
             'defaultSearch' => $this->defaultSearch,
+            'hideLabel' => $this->hideLabel,
         ]);
     }
 }

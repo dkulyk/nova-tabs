@@ -1,7 +1,7 @@
 <template>
     <div>
         <slot>
-            <!--<h4 class="text-90 font-normal text-2xl mb-3">{{ panel.name }}</h4>-->
+            <h4 v-if="! panel.hideLabel" class="text-90 font-normal text-2xl mb-3">{{ panel.name }}</h4>
         </slot>
         <div class="relationship-tabs-panel card overflow-hidden">
             <div class="flex flex-row">

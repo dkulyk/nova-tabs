@@ -166,6 +166,8 @@ public function fields(Request $request)
 }
 ```
 
+If you want to hide card label you can use `->hideLabel()` for Tabs panel.
+
 Set `->defaultSearch(true)` to revert it to its default.
 
 ![image](https://user-images.githubusercontent.com/3426944/50060732-dbc01980-0197-11e9-8f0c-6014132539a2.png)
