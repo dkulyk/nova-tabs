@@ -3,7 +3,7 @@
         <slot>
             <h4 v-if="! panel.hideLabel" class="text-90 font-normal text-2xl mb-3">{{ panel.name }}</h4>
         </slot>
-        <div class="relationship-tabs-panel card overflow-hidden">
+        <div class="relationship-tabs-panel card">
             <div class="flex flex-row">
                 <button
                         class="py-5 px-8 border-b-2 focus:outline-none tab"
@@ -23,7 +23,7 @@
                     :label="tab.name"
                     :key="'related-tabs-fields' + index"
             >
-                <div :class="{'px-6 py-3':!tab.listable}">
+                <div :class="{'px-6 py-3':!tab.listable}" v-if="tab.init">
                     <component
                             v-for="(field, index) in tab.fields"
                             :class="{'remove-bottom-border': index == tab.fields.length - 1}"
