@@ -2,6 +2,7 @@
 
 namespace DKulyk\Nova;
 
+use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use RuntimeException;
 use Laravel\Nova\Panel;
 use Illuminate\Http\Resources\MergeValue;
@@ -9,6 +10,8 @@ use Laravel\Nova\Contracts\ListableField;
 
 class Tabs extends Panel
 {
+    use ConditionallyLoadsAttributes;
+
     public $defaultSearch = false;
 
     public $hideLabel = false;
@@ -65,7 +68,7 @@ class Tabs extends Panel
      */
     public function addFields($tab, array $fields)
     {
-        foreach ($fields as $field) {
+        foreach ($this->filter($fields) as $field) {
             if ($field instanceof ListableField || $field instanceof Panel) {
                 $this->addTab($field);
                 continue;
