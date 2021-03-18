@@ -1,1 +1,6 @@
 // Nova Tool CSS
+.tab-content {
+  [dusk="create-button"], [dusk="attach-button"] {
+    margin-top: 1.5rem;
+  }
+}
