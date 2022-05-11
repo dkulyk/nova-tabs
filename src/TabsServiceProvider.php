@@ -12,8 +12,8 @@ class TabsServiceProvider extends ServiceProvider
     public function boot()
     {
         Event::listen(ServingNova::class, function () {
-            Nova::script('dkulyk-tabs', dirname(__DIR__) . '/dist/js/tabs.js');
-            Nova::style('dkulyk-tabs', dirname(__DIR__) . '/dist/css/tabs.css');
+            Nova::script('dkulyk-nova-tabs', dirname(__DIR__) . '/dist/js/tabs.js');
+            Nova::style('dkulyk-nova-tabs', dirname(__DIR__) . '/dist/css/tabs.css');
         });
     }
 }

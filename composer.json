@@ -8,6 +8,9 @@
             "email": "lnkvisitor.ts@gmail.com"
         }
     ],
+    "require": {
+        "laravel/nova": "^4.5"
+    },
     "autoload": {
         "psr-4": {
             "DKulyk\\Nova\\": "src"
@@ -22,5 +25,6 @@
                 "DKulyk\\Nova\\TabsServiceProvider"
             ]
         }
-    }
+    },
+
 }

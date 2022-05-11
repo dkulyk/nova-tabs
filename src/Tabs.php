@@ -5,6 +5,15 @@ namespace DKulyk\Nova;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\PotentiallyMissing;
+use Laravel\Nova\Contracts\BehavesAsPanel;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\FieldCollection;
+use Laravel\Nova\Fields\FieldFilterable;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOneThrough;
+use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\ResolvesFields;
 use RuntimeException;
 use Laravel\Nova\Panel;
 use Illuminate\Http\Resources\MergeValue;
@@ -12,121 +21,53 @@ use Laravel\Nova\Contracts\ListableField;
 
 class Tabs extends Panel
 {
-    public $defaultSearch = false;
-
-    public $hideLabel = false;
+    public $component = 'dkulyk-nova-tabs';
 
     /**
      * Prepare the given fields.
      *
-     * @param  \Closure|array $fields
+     * @param  (\Closure():array|iterable)|array|iterable  $fields
      * @return array
      */
-    protected function prepareFields($fields)
+    protected function prepareFields($fields): array
     {
-        collect(is_callable($fields) ? $fields() : $fields)->each(function ($fields, $key) {
-            if (is_string($key) && is_array($fields)) {
-                $fields = new Panel($key, $fields);
+        return collect(is_callable($fields) ? $fields() : $fields)->map(function (Panel|ListableField $panel) {
+            if ($panel instanceof BehavesAsPanel) {
+                if ($panel instanceof HasMany) {
+                    $field = new HasManyWrapper($panel);
+                }
+
+                if ($panel instanceof BelongsToMany) {
+                    $field = new BelongsToManyWrapper($panel);
+                }
+
+                if ($panel instanceof HasOneThrough) {
+                    $field = new HasOneThroughWrapper($panel);
+                }
+
+                if($panel instanceof MorphToMany) {
+                    $field = new MorphToManyWrapper($panel);
+                }
+
+                $field->assignedPanel = $this;
+                $field->panel = $this->name;
+                $field->component = 'relationship-panel';
+                $panel->withMeta([
+                    'tab' => $panel->asPanel()->name,
+                ]);
+
+                return [$field];
             }
 
-            $this->addTab($fields);
-        });
+            return collect($panel->data)->map(function ($field) use ($panel) {
+                $field->assignedPanel = $this;
+                $field->panel = $this->name;
+                $field->withMeta([
+                    'tab' => $panel->name,
+                ]);
 
-        return $this->data;
-    }
-
-    /**
-     * @param  Panel|\Laravel\Nova\Contracts\ListableField $panel
-     * @return \DKulyk\Nova\Tabs
-     */
-    public function addTab($panel): self
-    {
-        if ($panel instanceof ListableField) {
-            $panel->panel = $this->name;
-
-            $panel->withMeta([
-                'tab' => $panel->name,
-                'listable' => false,
-                'listableTab' => true
-            ]);
-            $this->data[] = $panel;
-        } elseif ($panel instanceof Panel) {
-            $this->addFields($panel->name, $panel->data);
-        } else {
-            throw new RuntimeException('Only listable fields or Panel allowed.');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Add fields to the Tab.
-     *
-     * @param  string $tab
-     * @param  array $fields
-     * @return \DKulyk\Nova\Tabs
-     */
-    public function addFields($tab, array $fields)
-    {
-        foreach ($fields as $field) {
-            if($field instanceof MissingValue) {
-                continue;
-            }
-            if ($field instanceof ListableField || $field instanceof Panel) {
-                $this->addTab($field);
-                continue;
-            }
-
-            if ($field instanceof MergeValue) {
-                $this->addFields($tab, $field->data);
-                continue;
-            }
-
-            $field->panel = $this->name;
-
-            $field->withMeta([
-                'tab' => $tab,
-            ]);
-
-            $this->data[] = $field;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param  bool $value
-     * @return \DKulyk\Nova\Tabs
-     */
-    public function defaultSearch($value = true)
-    {
-        $this->defaultSearch = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $value
-     * @return $this
-     */
-    public function hideLabel($value = true)
-    {
-        $this->hideLabel = $value;
-
-        return $this;
-    }
-
-    /**
-     * Prepare the panel for JSON serialization.
-     *
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return array_merge(parent::jsonSerialize(), [
-            'component' => 'dkulyk-tabs',
-            'defaultSearch' => $this->defaultSearch,
-            'hideLabel' => $this->hideLabel,
-        ]);
+                return $field;
+            });
+        })->flatten(1)->all();
     }
 }

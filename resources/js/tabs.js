@@ -1,5 +1,7 @@
-import Tabs from './components/Tabs.vue'
+import DetailTabs from './components/DetailTabs.vue'
+import FormTabs from './components/FormTabs.vue'
 
-Nova.booting((Vue, router, store) => {
-    Vue.component('dkulyk-tabs', Tabs);
+Nova.booting((app, store) => {
+  app.component('detail-dkulyk-nova-tabs', DetailTabs)
+  app.component('form-dkulyk-nova-tabs', FormTabs)
 })
